@@ -10,7 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        'helvetica': ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+        'helvetica': ['Helvetica Neue', 'Helvetica', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Arial', 'sans-serif'],
       },
       colors: {
         black: '#000000',

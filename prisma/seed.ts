@@ -5,34 +5,71 @@ const prisma = new PrismaClient()
 async function main() {
   console.log('🌱 Seeding Seth Command Center...')
 
-  // Create projects
-  const edenProject = await prisma.project.upsert({
-    where: { name: 'eden' },
+  // Create @Seth todos projects (personal task management)
+  const bmProject = await prisma.project.upsert({
+    where: { name: 'BM' },
     update: {},
     create: {
-      name: 'eden',
+      name: 'BM',
+      type: 'personal',
+      status: 'active',
+      color: '#FF6B6B', // Red accent
+    },
+  })
+
+  const relocationProject = await prisma.project.upsert({
+    where: { name: 'Relocation' },
+    update: {},
+    create: {
+      name: 'Relocation',
+      type: 'personal',
+      status: 'active',
+      color: '#4ECDC4', // Teal accent
+    },
+  })
+
+  const irsProject = await prisma.project.upsert({
+    where: { name: 'IRS' },
+    update: {},
+    create: {
+      name: 'IRS',
+      type: 'personal',
+      status: 'active',
+      color: '#45B7D1', // Blue accent
+    },
+  })
+
+  // Create projects
+  const edenProject = await prisma.project.upsert({
+    where: { name: 'Eden' },
+    update: {},
+    create: {
+      name: 'Eden',
       type: 'eden',
       status: 'active',
+      color: '#96CEB4', // Green accent
     },
   })
 
   const vibecodingProject = await prisma.project.upsert({
-    where: { name: 'vibecoding' },
+    where: { name: 'Vibecoding' },
     update: {},
     create: {
-      name: 'vibecoding',
+      name: 'Vibecoding',
       type: 'vibecoding',
       status: 'active',
+      color: '#FFEAA7', // Yellow accent
     },
   })
 
   const automataProject = await prisma.project.upsert({
-    where: { name: 'automata' },
+    where: { name: 'Automata' },
     update: {},
     create: {
-      name: 'automata',
+      name: 'Automata',
       type: 'automata',
       status: 'planning',
+      color: '#DDA0DD', // Purple accent
     },
   })
 
@@ -86,6 +123,13 @@ async function main() {
       projectId: sethProject.id,
       name: 'github-sync',
       cron: '0 7 * * *', // 7 AM daily
+      streak: 0,
+      enabled: true,
+    },
+    {
+      projectId: sethProject.id,
+      name: 'ai-session-sync',
+      cron: '*/30 * * * *', // Every 30 minutes
       streak: 0,
       enabled: true,
     },
@@ -225,29 +269,104 @@ async function main() {
 
   console.log('✅ Sample works created')
 
-  // Create sample tasks
+  // Create @Seth todos sample tasks (as per spec)
   const tasks = [
+    // BM site/email tasks
     {
-      projectId: edenProject.id,
-      title: 'Deploy SOLIENNE to production',
-      priority: 1,
-      status: 'ip',
-      tags: 'deployment,solienne',
+      projectId: bmProject.id,
+      title: 'Update BM site with latest portfolio',
+      notes: 'Include new Eden work and Vibecoding projects',
+      priority: 2,
+      status: 'open',
+      due: new Date('2025-10-15T00:00:00Z'),
+      source: 'email',
+      tags: 'website,portfolio',
+      energy: 2, // normal energy
     },
     {
-      projectId: edenProject.id,
-      title: 'Abraham launch communications',
+      projectId: bmProject.id,
+      title: 'Pay Paris Photo fee',
+      notes: 'Invoice received via email, due Oct 1',
       priority: 1,
       status: 'open',
-      due: new Date('2025-10-19T00:00:00Z'),
-      tags: 'launch,abraham,marketing',
+      due: new Date('2025-10-01T00:00:00Z'),
+      source: 'email',
+      tags: 'finance,event',
+      energy: 3, // light energy
+    },
+    // Abraham/Eden deck tasks
+    {
+      projectId: edenProject.id,
+      title: 'Abraham launch deck final review',
+      notes: 'Review covenant architecture slides before Oct 19 launch',
+      priority: 1,
+      status: 'doing',
+      due: new Date('2025-10-12T00:00:00Z'),
+      source: 'slash',
+      tags: 'launch,abraham,deck',
+      energy: 1, // deep energy
     },
     {
-      projectId: vibecodingProject.id,
-      title: 'Update portfolio with latest projects',
+      projectId: edenProject.id,
+      title: 'Deploy SOLIENNE consciousness gallery',
+      priority: 1,
+      status: 'open',
+      tags: 'deployment,solienne',
+      energy: 2,
+    },
+    // Automata deck
+    {
+      projectId: automataProject.id,
+      title: 'Automata vision deck v2',
+      notes: 'Update with latest research findings and technical architecture',
       priority: 2,
-      status: 'done',
-      tags: 'portfolio,content',
+      status: 'open',
+      source: 'manual',
+      tags: 'deck,vision,research',
+      energy: 1, // deep energy
+    },
+    // COBRA/Expats (IRS/Relocation)
+    {
+      projectId: irsProject.id,
+      title: 'Submit COBRA paperwork',
+      notes: 'Health insurance continuation forms',
+      priority: 1,
+      status: 'blocked',
+      due: new Date('2025-10-05T00:00:00Z'),
+      source: 'calendar',
+      tags: 'health,insurance,legal',
+      energy: 3, // light energy
+    },
+    {
+      projectId: relocationProject.id,
+      title: 'Research expat tax implications',
+      notes: 'Consult with international tax advisor',
+      priority: 2,
+      status: 'open',
+      source: 'manual',
+      tags: 'tax,legal,research',
+      energy: 1, // deep energy
+    },
+    {
+      projectId: relocationProject.id,
+      title: 'Book flights for location scouting',
+      priority: 2,
+      status: 'snoozed',
+      due: new Date('2025-11-01T00:00:00Z'),
+      tags: 'travel,planning',
+      energy: 3, // light energy
+    },
+    // Vibecoding tasks
+    {
+      projectId: vibecodingProject.id,
+      title: 'Newsletter draft - AI agent update',
+      notes: 'Cover Abraham launch and SOLIENNE gallery',
+      priority: 2,
+      status: 'open',
+      due: new Date('2025-10-07T00:00:00Z'),
+      source: 'ritual',
+      tags: 'newsletter,content',
+      energy: 2, // normal energy
     },
   ]
 

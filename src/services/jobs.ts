@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/db'
 import { auditService } from './audit'
 import { githubService } from './github'
+import { aiSessionService } from './aiSessions'
 import { z } from 'zod'
 
 // Job schemas
@@ -220,6 +221,10 @@ export class JobQueueService {
         await this.executeGitHubSync(payload)
         break
 
+      case 'ai-sessions.sync':
+        await this.executeAISessionSync(payload)
+        break
+
       default:
         throw new Error(`Unknown job type: ${type}`)
     }
@@ -364,6 +369,28 @@ export class JobQueueService {
       payload: {
         stats,
         kpisUpdated: kpiUpdates.length
+      },
+      status: 'success',
+    })
+  }
+
+  /**
+   * Execute AI session sync job
+   */
+  private async executeAISessionSync(payload: { sources?: string[] }): Promise<void> {
+    const result = await aiSessionService.syncAISessions()
+
+    if (!result.success) {
+      throw new Error('AI session sync failed')
+    }
+
+    await auditService.log({
+      actor: 'ai-session-sync',
+      action: 'ai-sessions.sync.completed',
+      payload: {
+        processed: result.processed,
+        itemsCreated: result.itemsCreated,
+        sources: payload.sources || ['mock']
       },
       status: 'success',
     })

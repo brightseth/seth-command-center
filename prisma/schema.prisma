@@ -13,8 +13,9 @@ datasource db {
 model Project {
   id        String   @id @default(cuid())
   name      String   @unique
-  type      String   // 'eden','vibecoding','automata'
+  type      String   // 'eden','vibecoding','automata','personal'
   status    String   // 'active','planning','paused','done'
+  color     String?  // UI accent color
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -82,25 +83,48 @@ model Task {
   id        String    @id @default(cuid())
   projectId String
   title     String
+  notes     String?   // markdown notes
   priority  Int       @default(2) // 1=high, 2=medium, 3=low
-  status    String    // 'open','ip','blocked','done'
+  status    String    @default("open") // 'open','doing','blocked','done','snoozed'
   due       DateTime?
+  source    String    @default("manual") // 'email','slash','calendar','api','manual'
   tags      String   // Comma-separated tags
+  energy    Int       @default(2) // 1=deep, 2=normal, 3=light
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
   // Relations
-  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project     Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  sourceEmails SourceEmail[]
 
   @@index([projectId, status])
   @@index([priority, due])
+  @@index([status, priority])
   @@map("tasks")
+}
+
+model SourceEmail {
+  id         String   @id @default(cuid())
+  taskId     String
+  from       String
+  subject    String
+  snippet    String?
+  threadUrl  String?  // link back to Gmail
+  receivedAt DateTime
+  createdAt  DateTime @default(now())
+
+  // Relations
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@index([taskId])
+  @@index([receivedAt])
+  @@map("source_emails")
 }
 
 model AuditLog {
   id        String   @id @default(cuid())
-  actor     String   // 'system','user','job'
-  action    String   // 'ritual.run','manifest.recompute','bridge.ingest'
+  actor     String   // '@seth','agent','system','user','job'
+  action    String   // 'todo.create','todo.complete','todo.snooze','todo.delegate','ritual.run','manifest.recompute','bridge.ingest'
   payload   String   // JSON string
   status    String   // 'success','failure','pending'
   error     String?
@@ -108,6 +132,7 @@ model AuditLog {
 
   @@index([createdAt])
   @@index([action, status])
+  @@index([actor])
   @@map("audit_logs")
 }
 
