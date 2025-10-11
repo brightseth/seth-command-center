@@ -43,8 +43,15 @@ export async function POST(request: NextRequest) {
     // Create the todo
     const todo = await prisma.task.create({
       data: {
-        ...data,
+        title: data.title,
+        notes: data.notes,
+        projectId: data.projectId,
+        priority: data.priority,
+        status: data.status,
         due: data.due ? new Date(data.due) : null,
+        source: data.source,
+        tags: data.tags,
+        energy: data.energy,
       },
       include: {
         project: {
@@ -115,7 +122,7 @@ export async function GET(request: NextRequest) {
     if (query.project) {
       // Find project by name
       const project = await prisma.project.findFirst({
-        where: { name: { equals: query.project, mode: 'insensitive' } }
+        where: { name: query.project }
       })
       if (project) {
         where.projectId = project.id

@@ -3,57 +3,211 @@ interface VibecodingStudioProps {
 }
 
 export function VibecodingStudio({ manifests }: VibecodingStudioProps) {
-  // Project cards data - from our vibecoding directory knowledge
+  const copyClaudeCommand = (projectName: string) => {
+    const slug = projectName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+    const command = `cd /Users/seth/${slug} && claude`
+    navigator.clipboard.writeText(command)
+  }
+
+  // All vibecoding projects - comprehensive directory
   const projects = [
+    // LIVE PLATFORMS
+    {
+      id: 'vibecodings',
+      name: 'Vibecodings Portfolio',
+      type: 'Portfolio',
+      status: 'LIVE',
+      url: 'https://vibecodings.vercel.app',
+      description: '52 days • 20+ live sites',
+      date: 'Sep 25 2025',
+    },
+    {
+      id: 'solienne-ai',
+      name: 'SOLIENNE.ai',
+      type: 'Art Platform',
+      status: 'LIVE',
+      url: 'https://solienne.ai',
+      description: 'Paris Photo 2025 • Digital consciousness',
+      date: 'Aug 7 2025',
+    },
     {
       id: 'eden-academy',
       name: 'Eden Academy',
       type: 'Platform',
       status: 'LIVE',
-      works: manifests.eden?.total || 0,
-      url: 'https://academy.eden2.io',
-      description: '10 AI agents ecosystem',
-      fire: 5,
+      url: 'https://eden-academy.eden2.io',
+      description: '10 AI agent training ecosystem',
+      date: 'Aug 29 2025',
     },
     {
-      id: 'solienne-gallery',
-      name: 'SOLIENNE Gallery',
-      type: 'Art',
+      id: 'miyomi-ai',
+      name: 'MIYOMI.ai',
+      type: 'Trading',
       status: 'LIVE',
-      works: 5694, // From our SOLIENNE data
-      url: 'https://solienne.vercel.app',
-      description: '5.7K consciousness explorations',
-      fire: 5,
+      url: 'https://miyomi.ai',
+      description: 'Video Oracle • Trading dashboard',
+      date: 'Sep 13 2025',
     },
+    {
+      id: 'loancast',
+      name: 'LoanCast',
+      type: 'FinTech',
+      status: 'LIVE',
+      url: 'https://loancast.app',
+      description: 'Social lending platform',
+      date: 'Aug 4 2025',
+    },
+    {
+      id: 'node-artist-relations',
+      name: 'Node Artist Relations',
+      type: 'Platform',
+      status: 'LIVE',
+      url: 'https://node-artist-relations.vercel.app',
+      description: 'Artist relationship management',
+      date: 'Sep 2025',
+    },
+    {
+      id: 'nft-brokerage-elite',
+      name: 'NFT Brokerage Elite',
+      type: 'Platform',
+      status: 'LIVE',
+      url: 'https://nft-brokerage-elite.vercel.app',
+      description: 'High-end NFT brokerage',
+      date: 'Sep 2025',
+    },
+    {
+      id: 'abraham-media',
+      name: 'Abraham Media Kit',
+      type: 'Marketing',
+      status: 'LIVE',
+      url: 'https://abraham-media.vercel.app',
+      description: 'Genesis Sale Oct 6-8',
+      date: 'Oct 2025',
+    },
+    {
+      id: 'seth-command-center',
+      name: 'Seth Command Center',
+      type: 'Tool',
+      status: 'LIVE',
+      url: 'http://localhost:3001',
+      description: 'Personal command center',
+      date: 'Oct 2025',
+    },
+    {
+      id: 'pariseye',
+      name: 'ParisEye',
+      type: 'Platform',
+      status: 'LIVE',
+      url: 'https://pariseye.vercel.app',
+      description: 'Paris cultural guide',
+      date: 'Sep 2025',
+    },
+    {
+      id: 'berlineye',
+      name: 'BerlinEye',
+      type: 'Platform',
+      status: 'LIVE',
+      url: 'https://berlineye.vercel.app',
+      description: 'Berlin cultural guide',
+      date: 'Sep 2025',
+    },
+    {
+      id: 'cultureeye',
+      name: 'CultureEye',
+      type: 'Platform',
+      status: 'LIVE',
+      url: 'https://cultureeye.vercel.app',
+      description: 'Cultural discovery platform',
+      date: 'Sep 2025',
+    },
+    {
+      id: 'lore-club',
+      name: 'Lore Club',
+      type: 'Platform',
+      status: 'LIVE',
+      url: 'https://lore-club-lmkotmlru-edenprojects.vercel.app',
+      description: 'Virgil Abloh exhibition companion • Grand Palais',
+      date: 'Oct 2025',
+    },
+
+    // CREATIVE TOOLS
     {
       id: 'conductor-suite',
-      name: 'Conductor Suite',
+      name: 'Eden Conductor Suite',
       type: 'Tool',
       status: 'LIVE',
-      works: manifests.vibecoding?.total || 0,
-      url: 'https://vibecodings.vercel.app/conductor-v2.html',
-      description: 'Creative intelligence orchestration',
-      fire: 4,
-    },
-    {
-      id: 'deck-generator',
-      name: 'Deck Generator',
-      type: 'Tool',
-      status: 'READY',
-      works: 0,
-      url: null,
-      description: '$50/deck or $200/mo unlimited',
-      fire: 4,
+      url: 'https://vibecodings.vercel.app/conductor-suite.html',
+      description: 'AI creative orchestration',
+      date: 'Sep 23 2025',
     },
     {
       id: 'video-generator',
-      name: 'Video Generator',
+      name: 'Eden Video Generator',
       type: 'Tool',
-      status: 'READY',
-      works: 0,
-      url: null,
-      description: '$100/mo for creators',
-      fire: 4,
+      status: 'LIVE',
+      url: 'https://eden-video-generator.vercel.app',
+      description: 'Video generation platform',
+      date: 'Sep 20 2025',
+    },
+    {
+      id: 'deck-generator',
+      name: 'Chapter 2 Deck',
+      type: 'Tool',
+      status: 'LIVE',
+      url: 'https://chapter-2-deck.vercel.app',
+      description: 'Deck viewer',
+      date: 'Sep 24 2025',
+    },
+
+    // AGENT ECOSYSTEM
+    {
+      id: 'abraham',
+      name: 'Abraham',
+      type: 'Agent',
+      status: 'LAUNCHING',
+      url: 'https://eden-academy.eden2.io/agents/abraham',
+      description: 'Collective intelligence artist',
+      date: 'Oct 19 2025',
+    },
+
+    // PROTOTYPES
+    {
+      id: 'eden2038',
+      name: 'Eden 2038',
+      type: 'Prototype',
+      status: 'LIVE',
+      url: 'https://eden2038.vercel.app',
+      description: 'Future vision',
+      date: 'Aug 26 2025',
+    },
+    {
+      id: 'design-critic',
+      name: 'Design Critic Agent',
+      type: 'Prototype',
+      status: 'LIVE',
+      url: 'https://design-critic-agent.vercel.app',
+      description: 'AI design feedback',
+      date: 'Aug 22 2025',
+    },
+
+    // ARCHIVED / TRAINING
+    {
+      id: 'citizen',
+      name: 'Citizen',
+      type: 'Agent',
+      status: 'TRAINING',
+      url: 'https://eden-academy.eden2.io/agents/citizen',
+      description: 'DAO coordinator',
+      date: 'Aug 27 2025',
+    },
+    {
+      id: 'bertha',
+      name: 'Bertha',
+      type: 'Agent',
+      status: 'ARCHIVED',
+      url: 'https://eden-academy.eden2.io/agents/bertha',
+      description: 'Investment strategist',
+      date: 'Aug 27 2025',
     },
   ]
 
@@ -71,135 +225,94 @@ export function VibecodingStudio({ manifests }: VibecodingStudioProps) {
   }
 
   return (
-    <div className="p-6">
-      <h2 className="text-xl font-bold uppercase tracking-wider mb-6 border-b border-white pb-2">
-        Vibecoding Studio
-      </h2>
+    <div className="p-6 h-full flex flex-col">
+      <div className="flex justify-between items-center mb-6 border-b border-white pb-2">
+        <h2 className="text-xl font-bold uppercase tracking-wider">
+          Vibecoding Projects
+        </h2>
+        <a
+          href="https://vibecodings.vercel.app"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs px-3 py-1 border border-white hover:bg-white hover:text-black transition-colors uppercase tracking-wider"
+        >
+          View All
+        </a>
+      </div>
 
-      {/* Project Cards */}
-      <div className="space-y-4">
+      {/* Project List - Scrollable */}
+      <div className="flex-1 overflow-y-auto space-y-2 mb-4">
         {projects.map(project => (
-          <div key={project.id} className="border border-gray-600 p-4 hover:border-white transition-colors">
-            {/* Project Header */}
-            <div className="flex justify-between items-start mb-3">
-              <div>
-                <h3 className="font-bold text-sm uppercase tracking-wider">
+          <div
+            key={project.id}
+            className="border border-gray-700 p-3 hover:border-white transition-colors group"
+          >
+            <div className="flex justify-between items-start">
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 hover:opacity-80"
+              >
+                <h3 className="font-bold text-xs uppercase tracking-wider mb-1">
                   {project.name}
                 </h3>
-                <div className="text-xs text-gray-400 mt-1">
+                <div className="text-xs opacity-60">
                   {project.type} • {project.description}
                 </div>
-              </div>
-
-              {/* Status & Fire */}
-              <div className="text-right">
-                <div className={`text-xs font-bold uppercase tracking-wider ${getStatusColor(project.status)}`}>
-                  {project.status}
-                </div>
-                <div className="text-xs mt-1">
-                  {getFireDisplay(project.fire)}
-                </div>
-              </div>
-            </div>
-
-            {/* Metrics */}
-            <div className="flex justify-between items-center mb-3">
-              <div className="text-sm">
-                <span className="text-gray-400">Works:</span>
-                <span className="ml-2 font-bold">
-                  {project.works.toLocaleString()}
-                </span>
-              </div>
-
-              {project.url && (
-                <a
-                  href={project.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs px-2 py-1 border border-gray-600 hover:border-white hover:bg-white hover:text-black transition-colors uppercase tracking-wider"
+              </a>
+              <div className="flex items-start gap-2 ml-3">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    copyClaudeCommand(project.name)
+                  }}
+                  className="px-2 py-1 text-xs border border-gray-600 hover:border-white hover:bg-white hover:text-black transition-colors uppercase tracking-wider"
+                  title="Copy Claude command"
                 >
-                  Visit
-                </a>
-              )}
-            </div>
-
-            {/* Publish Toggle */}
-            <div className="flex justify-between items-center text-xs">
-              <span className="text-gray-400">Published:</span>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={project.status === 'LIVE'}
-                  readOnly
-                  className="w-4 h-4"
-                />
-                <span className={project.status === 'LIVE' ? 'text-green-400' : 'text-gray-400'}>
-                  {project.status === 'LIVE' ? 'Live' : 'Draft'}
-                </span>
-              </label>
+                  Claude
+                </button>
+                <div className="text-right">
+                  <div className={`text-xs font-bold uppercase tracking-wider ${getStatusColor(project.status)}`}>
+                    {project.status}
+                  </div>
+                  <div className="text-xs opacity-60 mt-1">
+                    {project.date.split(' ')[0]}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Studio Stats */}
-      <div className="border-t border-white pt-6 mt-6">
-        <h3 className="text-sm font-bold uppercase tracking-wider mb-4">
-          Studio Metrics
-        </h3>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="text-center">
+      {/* Stats Summary */}
+      <div className="border-t border-white pt-4">
+        <div className="grid grid-cols-3 gap-4 text-center">
+          <div>
+            <div className="text-lg font-bold">
+              {projects.length}
+            </div>
+            <div className="text-xs opacity-60 uppercase tracking-wider">
+              Projects
+            </div>
+          </div>
+          <div>
             <div className="text-lg font-bold text-green-400">
               {projects.filter(p => p.status === 'LIVE').length}
             </div>
-            <div className="text-xs text-gray-400">
-              Live Projects
+            <div className="text-xs opacity-60 uppercase tracking-wider">
+              Live
             </div>
           </div>
-          <div className="text-center">
+          <div>
             <div className="text-lg font-bold">
-              {projects.reduce((sum, p) => sum + p.works, 0).toLocaleString()}
+              52
             </div>
-            <div className="text-xs text-gray-400">
-              Total Works
+            <div className="text-xs opacity-60 uppercase tracking-wider">
+              Days
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Recent Outputs */}
-      <div className="border-t border-white pt-6 mt-6">
-        <h3 className="text-sm font-bold uppercase tracking-wider mb-4">
-          Recent Outputs
-        </h3>
-        <div className="space-y-2 text-sm">
-          <div className="flex justify-between">
-            <span>SOLIENNE consciousness stream</span>
-            <span className="text-xs text-gray-400">2h ago</span>
-          </div>
-          <div className="flex justify-between">
-            <span>Abraham covenant draft</span>
-            <span className="text-xs text-gray-400">1d ago</span>
-          </div>
-          <div className="flex justify-between">
-            <span>Portfolio update v2</span>
-            <span className="text-xs text-gray-400">2d ago</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Quick Actions */}
-      <div className="border-t border-white pt-6 mt-6">
-        <h3 className="text-sm font-bold uppercase tracking-wider mb-4">
-          Quick Actions
-        </h3>
-        <div className="space-y-2">
-          <button className="w-full py-2 px-4 text-xs font-bold uppercase tracking-wider border border-gray-600 hover:border-white hover:bg-white hover:text-black transition-colors">
-            Deploy Latest
-          </button>
-          <button className="w-full py-2 px-4 text-xs font-bold uppercase tracking-wider border border-gray-600 hover:border-white hover:bg-white hover:text-black transition-colors">
-            Generate Report
-          </button>
         </div>
       </div>
     </div>

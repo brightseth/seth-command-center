@@ -18,12 +18,8 @@ export function initSentry() {
         return event
       },
 
-      integrations: [
-        new Sentry.BrowserTracing({
-          // Trace key user actions
-          routingInstrumentation: Sentry.nextRouterInstrumentation,
-        }),
-      ],
+      // Sentry v8 integrations are automatically added
+      // BrowserTracing is now built-in
     })
   }
 }

@@ -387,7 +387,7 @@ export class AISessionService {
         actor: 'ai-session-sync',
         action: 'sync.failed',
         payload: { error: (error as Error).message },
-        status: 'error'
+        status: 'failure'
       })
 
       return {

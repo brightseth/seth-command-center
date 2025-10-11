@@ -41,24 +41,15 @@ export async function POST(request: NextRequest) {
     })
 
     if (sethProject) {
-      // Update/create KPIs
+      // Create KPIs (KPI model doesn't have unique constraints for upsert)
       for (const kpi of kpiUpdates) {
-        await prisma.kPI.upsert({
-          where: {
-            projectId_key: {
-              projectId: sethProject.id,
-              key: kpi.key
-            }
-          },
-          create: {
+        await prisma.kPI.create({
+          data: {
             projectId: sethProject.id,
             key: kpi.key,
             value: kpi.value,
-            at: kpi.at
-          },
-          update: {
-            value: kpi.value,
-            at: kpi.at
+            at: new Date(kpi.at),
+            source: 'github-sync'
           }
         })
       }

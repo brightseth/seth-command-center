@@ -75,10 +75,12 @@ export class GitHubService {
       const repos = await this.githubRequest(`/user/repos?sort=updated&per_page=100`)
 
       await auditService.log({
-        operation: 'github.repos.fetch',
-        entityType: 'github',
-        entityId: this.username,
-        metadata: { repoCount: repos.length }
+        actor: 'github-service',
+        action: 'repos.fetch',
+        payload: {
+          username: this.username,
+          repoCount: repos.length
+        }
       })
 
       return repos
@@ -101,10 +103,13 @@ export class GitHubService {
       const commits = await this.githubRequest(endpoint)
 
       await auditService.log({
-        operation: 'github.commits.fetch',
-        entityType: 'github',
-        entityId: repo,
-        metadata: { commitCount: commits.length, since }
+        actor: 'github-service',
+        action: 'commits.fetch',
+        payload: {
+          repo,
+          commitCount: commits.length,
+          since
+        }
       })
 
       return commits.map((commit: any) => ({
@@ -163,10 +168,12 @@ export class GitHubService {
       }
 
       await auditService.log({
-        operation: 'github.stats.compute',
-        entityType: 'github',
-        entityId: this.username,
-        metadata: stats
+        actor: 'github-service',
+        action: 'stats.compute',
+        payload: {
+          username: this.username,
+          ...stats
+        }
       })
 
       return stats
@@ -193,20 +200,26 @@ export class GitHubService {
       // For now, just return the stats
 
       await auditService.log({
-        operation: 'github.sync.complete',
-        entityType: 'github',
-        entityId: this.username,
-        metadata: { syncedAt: new Date().toISOString(), ...stats }
+        actor: 'github-service',
+        action: 'sync.complete',
+        payload: {
+          username: this.username,
+          syncedAt: new Date().toISOString(),
+          ...stats
+        }
       })
 
       return { success: true, stats }
     } catch (error) {
       console.error('GitHub sync failed:', error)
       await auditService.log({
-        operation: 'github.sync.failed',
-        entityType: 'github',
-        entityId: this.username,
-        metadata: { error: (error as Error).message }
+        actor: 'github-service',
+        action: 'sync.failed',
+        payload: {
+          username: this.username,
+          error: (error as Error).message
+        },
+        status: 'failure'
       })
 
       return {

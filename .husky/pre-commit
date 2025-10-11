@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run security verification before every commit
+echo "🔐 Running security verification..."
+npx tsx scripts/verify-security.js
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ Security check failed!"
+  echo "   API keys or secrets detected in code"
+  echo "   Please remove them before committing"
+  echo ""
+  exit 1
+fi
+
+echo "✅ Security check passed"
+echo ""

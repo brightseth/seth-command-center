@@ -4,15 +4,21 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
+    "db:clean": "tsx scripts/remove-duplicates.js",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "security:check": "tsx scripts/verify-security.js",
+    "setup:github": "cat GITHUB_SETUP.md",
+    "github:test": "curl -s 'http://localhost:3001/api/github/commits?project=Abraham&days=7' | jq '.'",
+    "sync:chatgpt": "curl -s http://localhost:3001/api/export/chatgpt",
+    "sync:copy": "curl -s http://localhost:3001/api/export/chatgpt | pbcopy && echo '✅ TODO list copied to clipboard - paste in ChatGPT'"
   },
   "dependencies": {
     "next": "15.0.0",
@@ -21,7 +27,7 @@
     "@prisma/client": "^5.7.0",
     "prisma": "^5.7.0",
     "zod": "^3.22.4",
-    "@sentry/nextjs": "^7.85.0",
+    "@sentry/nextjs": "^8.0.0",
     "@t3-oss/env-nextjs": "^0.7.1",
     "tailwindcss": "^3.3.6",
     "autoprefixer": "^10.4.16",

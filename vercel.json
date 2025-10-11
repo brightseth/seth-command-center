@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "buildCommand": "prisma generate && prisma migrate deploy && next build",
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "crons": [
+    {
+      "path": "/api/rituals/run",
+      "schedule": "30 8 * * *"
+    }
+  ]
+}

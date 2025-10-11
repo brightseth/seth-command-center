@@ -105,7 +105,7 @@ export default function CommandCenter() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white font-helvetica">
+    <div className="min-h-screen bg-black text-white font-helvetica relative">
       {/* Header */}
       <header className="border-b border-white p-8">
         <div className="flex justify-between items-center">
@@ -125,7 +125,7 @@ export default function CommandCenter() {
       </header>
 
       {/* Three-Panel Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 p-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 p-8 pb-20">
         {/* CEO View */}
         <div className="border border-white">
           <CEOView
@@ -170,6 +170,18 @@ export default function CommandCenter() {
             manifests={data.manifests}
           />
         </div>
+      </div>
+
+      {/* Signature - Bottom Right */}
+      <div className="fixed bottom-4 right-4 text-xs opacity-50 hover:opacity-100 transition-opacity">
+        <a
+          href="https://vibecodings.vercel.app"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-white hover:underline"
+        >
+          vibecoded by @seth
+        </a>
       </div>
     </div>
   )

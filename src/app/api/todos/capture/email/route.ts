@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
     if (data.project) {
       // Look up project by name
       const project = await prisma.project.findFirst({
-        where: { name: { equals: data.project, mode: 'insensitive' } }
+        where: { name: data.project }
       })
       if (project) {
         projectId = project.id
@@ -107,7 +107,7 @@ export async function POST(request: NextRequest) {
       const detectedProjectName = extractProjectFromEmail(data.from, data.subject, data.snippet)
       if (detectedProjectName) {
         const project = await prisma.project.findFirst({
-          where: { name: { equals: detectedProjectName, mode: 'insensitive' } }
+          where: { name: detectedProjectName }
         })
         if (project) {
           projectId = project.id
