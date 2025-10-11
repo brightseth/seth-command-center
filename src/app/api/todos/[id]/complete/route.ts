@@ -59,6 +59,28 @@ export async function POST(
       }
     })
 
+    // Trigger doc-organizer webhook for cleanup
+    // This will check if any specs should be archived based on completed task
+    try {
+      const webhookUrl = process.env.NODE_ENV === 'production'
+        ? `${process.env.NEXT_PUBLIC_APP_URL}/api/hooks/doc-organizer`
+        : 'http://localhost:3000/api/hooks/doc-organizer'
+
+      await fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          project: existingTodo.project.name,
+          trigger: 'task.complete',
+          taskId: id,
+          reason: `Task completed: ${completedTodo.title}`
+        })
+      })
+    } catch (webhookError) {
+      // Don't fail the completion if webhook fails
+      console.error('Doc-organizer webhook failed:', webhookError)
+    }
+
     return NextResponse.json({
       success: true,
       data: completedTodo,

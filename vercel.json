@@ -6,8 +6,8 @@
   },
   "crons": [
     {
-      "path": "/api/rituals/run",
-      "schedule": "30 8 * * *"
+      "path": "/api/rituals/check",
+      "schedule": "0 9 * * 5"
     }
   ]
 }

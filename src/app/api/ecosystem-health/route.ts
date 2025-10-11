@@ -9,6 +9,47 @@ interface SystemHealth {
   data?: Record<string, any>
 }
 
+/**
+ * POST /api/ecosystem-health
+ * Accept health metrics from external sync scripts
+ */
+export async function POST(request: Request) {
+  try {
+    const body = await request.json()
+    const { timestamp, projects } = body
+
+    if (!projects || !Array.isArray(projects)) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid request body: projects array required' },
+        { status: 400 }
+      )
+    }
+
+    // Store health metrics in audit log for historical tracking
+    await prisma.auditLog.create({
+      data: {
+        actor: 'system',
+        action: 'ecosystem-health.sync',
+        payload: JSON.stringify({ timestamp, projects }),
+        status: 'success'
+      }
+    })
+
+    return NextResponse.json({
+      success: true,
+      message: 'Health metrics synced successfully',
+      timestamp,
+      projects: projects.length
+    })
+
+  } catch (error) {
+    return NextResponse.json(
+      { success: false, error: error instanceof Error ? error.message : 'Unknown error' },
+      { status: 500 }
+    )
+  }
+}
+
 export async function GET() {
   const timestamp = new Date().toISOString()
   const health: Record<string, SystemHealth> = {}
