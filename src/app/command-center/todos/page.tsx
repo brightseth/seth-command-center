@@ -392,7 +392,7 @@ export default function TodosPage() {
                   Today's Tasks
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 max-h-[800px] overflow-y-auto pr-4">
                   {todos
                     .filter(todo => todo.status !== 'done')
                     .map((todo) => (
