@@ -1,9 +1,10 @@
 import chokidar from 'chokidar'
+import type { FSWatcher } from 'chokidar'
 import { readFile } from 'fs/promises'
 import { BaseIngestionService, IngestedTask } from './base-ingestion'
 
 export class ClaudeFilesIngestion extends BaseIngestionService {
-  private watcher: chokidar.FSWatcher | null = null
+  private watcher: FSWatcher | null = null
 
   async start() {
     const paths = [
