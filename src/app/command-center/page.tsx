@@ -116,7 +116,7 @@ export default function CommandCenter() {
             <div>Last Updated: {lastRefresh.toLocaleTimeString()}</div>
             <div className="mt-2 flex gap-2">
               <a
-                href="/monitor"
+                href="/command-center/monitor"
                 className="px-4 py-2 border border-white hover:bg-white hover:text-black transition-colors text-xs uppercase tracking-wider"
               >
                 Monitor
