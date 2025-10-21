@@ -131,6 +131,9 @@ export async function GET(request: NextRequest) {
 
     if (query.status) {
       where.status = query.status
+    } else {
+      // Default to active tasks only (exclude completed)
+      where.status = { in: ['open', 'doing', 'blocked', 'snoozed'] }
     }
 
     if (query.priority) {
