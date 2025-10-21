@@ -2,6 +2,7 @@ import { prisma } from '@/lib/db'
 import { auditService } from './audit'
 import { githubService } from './github'
 import { aiSessionService } from './aiSessions'
+import { ManualScanService } from './ingestion/manual-scan'
 import { z } from 'zod'
 
 // Job schemas
@@ -247,9 +248,21 @@ export class JobQueueService {
       throw new Error(`Ritual disabled: ${ritual.name}`)
     }
 
-    // Simulate ritual execution based on type
-    const executionTime = Math.random() * 3000 + 1000 // 1-4 seconds
-    await new Promise(resolve => setTimeout(resolve, executionTime))
+    // Execute ritual based on name
+    const startTime = Date.now()
+    let result: any = {}
+
+    if (ritual.name === 'scan-todos') {
+      // Run TODO scan
+      const scanner = new ManualScanService()
+      result = await scanner.scanAll()
+    } else {
+      // Simulate ritual execution for other types
+      const executionTime = Math.random() * 3000 + 1000 // 1-4 seconds
+      await new Promise(resolve => setTimeout(resolve, executionTime))
+    }
+
+    const executionTime = Date.now() - startTime
 
     // Update ritual streak and last run
     await prisma.ritual.update({
@@ -262,8 +275,9 @@ export class JobQueueService {
 
     // Log ritual completion
     await auditService.logRitualRun(ritual.name, true, {
-      executionTime: Math.round(executionTime),
-      project: ritual.project.name
+      executionTime,
+      project: ritual.project.name,
+      ...result
     })
   }
 
