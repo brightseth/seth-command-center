@@ -93,13 +93,27 @@ model Task {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
+  // Memory & Context Fields
+  sourceContext      String?    // JSON: {conversation_id, meeting_id, file_path}
+  extractedFrom      String?    // Original text snippet
+  linkedTaskIds      String     @default("") // Comma-separated related task IDs
+  synthesisMetadata  String?    // JSON: {duplicate_of, grouped_with, confidence}
+  mentionCount       Int        @default(1) // How many times referenced
+  lastMentioned      DateTime?  // When last referenced
+  archived           Boolean    @default(false)
+  archivedAt         DateTime?
+
   // Relations
-  project     Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project      Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
   sourceEmails SourceEmail[]
+  history      TaskHistory[]
+  syntheses    TaskSynthesis[]
 
   @@index([projectId, status])
   @@index([priority, due])
   @@index([status, priority])
+  @@index([mentionCount])
+  @@index([archived, archivedAt])
   @@map("tasks")
 }
 
@@ -153,4 +167,56 @@ model Job {
   @@index([status, runAt])
   @@index([type])
   @@map("jobs")
+}
+
+// Task History - Complete audit trail
+model TaskHistory {
+  id         String   @id @default(cuid())
+  taskId     String
+  action     String   // 'created','updated','completed','mentioned','archived'
+  changes    String   // JSON: {field: {before, after}}
+  source     String   // 'limitless','granola','claude-code','manual','api'
+  context    String?  // Additional context
+  createdAt  DateTime @default(now())
+
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@index([taskId, createdAt])
+  @@map("task_history")
+}
+
+// Task Synthesis - Intelligent linking
+model TaskSynthesis {
+  id            String   @id @default(cuid())
+  taskId        String
+  relatedTaskId String?
+  relationship  String   // 'duplicate','related','blocks','blocked_by','supersedes'
+  confidence    Float    // 0.0 - 1.0
+  reason        String   // Why they're linked
+  createdBy     String   @default("synthesis-engine")
+  createdAt     DateTime @default(now())
+
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@index([taskId])
+  @@index([relatedTaskId])
+  @@map("task_synthesis")
+}
+
+// Ingestion Source Tracking
+model IngestionSource {
+  id            String   @id @default(cuid())
+  name          String   @unique // 'limitless','granola','claude-code','email'
+  type          String   // 'api','file-watcher','webhook','manual'
+  enabled       Boolean  @default(true)
+  lastSync      DateTime?
+  lastSuccess   DateTime?
+  tasksCreated  Int      @default(0)
+  config        String   // JSON: {api_key, file_paths, webhooks, etc}
+  health        String   @default("healthy") // 'healthy','degraded','failing','disabled'
+  errorLog      String?  // Recent errors (JSON array)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("ingestion_sources")
 }

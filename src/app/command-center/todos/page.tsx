@@ -65,6 +65,7 @@ export default function TodosPage() {
   const [quickAddTitle, setQuickAddTitle] = useState('')
   const [quickAddProject, setQuickAddProject] = useState('')
   const [quickAddPriority, setQuickAddPriority] = useState(2)
+  const [showCompleted, setShowCompleted] = useState(false)
 
   useEffect(() => {
     loadData()
@@ -392,7 +393,7 @@ export default function TodosPage() {
                   Today's Tasks
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 max-h-[800px] overflow-y-auto pr-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 max-h-[1400px] overflow-y-auto pr-4">
                   {todos
                     .filter(todo => todo.status !== 'done')
                     .map((todo) => (
@@ -461,13 +462,21 @@ export default function TodosPage() {
           {/* Week Tab */}
           {activeTab === 'week' && (
             <div className="space-y-8">
-              <h2 className="text-2xl font-bold uppercase tracking-wide">
-                This Week's Overview
-              </h2>
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold uppercase tracking-wide">
+                  This Week's Overview
+                </h2>
+                <button
+                  onClick={() => setShowCompleted(!showCompleted)}
+                  className="border border-white px-4 py-2 hover:bg-white hover:text-black transition-colors font-bold uppercase tracking-wide text-sm"
+                >
+                  {showCompleted ? 'Hide' : 'Show'} Completed
+                </button>
+              </div>
 
               {/* Kanban Board */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                {['open', 'doing', 'blocked', 'done'].map(status => (
+                {['open', 'doing', 'blocked', 'done'].filter(status => status !== 'done' || showCompleted).map(status => (
                   <div key={status} className="border border-gray-600">
                     <div className="bg-gray-900 p-4 border-b border-gray-600">
                       <h3 className="font-bold uppercase tracking-wide text-sm">
@@ -478,7 +487,7 @@ export default function TodosPage() {
                       </span>
                     </div>
 
-                    <div className="p-4 space-y-3 max-h-96 overflow-y-auto">
+                    <div className="p-4 space-y-3 max-h-[1200px] overflow-y-auto">
                       {todos
                         .filter(todo => todo.status === status)
                         .map(todo => (

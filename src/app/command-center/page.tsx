@@ -114,12 +114,20 @@ export default function CommandCenter() {
           </h1>
           <div className="text-right text-sm tracking-wide">
             <div>Last Updated: {lastRefresh.toLocaleTimeString()}</div>
-            <button
-              onClick={loadDashboard}
-              className="mt-2 px-4 py-2 border border-white hover:bg-white hover:text-black transition-colors text-xs uppercase tracking-wider"
-            >
-              Refresh
-            </button>
+            <div className="mt-2 flex gap-2">
+              <a
+                href="/monitor"
+                className="px-4 py-2 border border-white hover:bg-white hover:text-black transition-colors text-xs uppercase tracking-wider"
+              >
+                Monitor
+              </a>
+              <button
+                onClick={loadDashboard}
+                className="px-4 py-2 border border-white hover:bg-white hover:text-black transition-colors text-xs uppercase tracking-wider"
+              >
+                Refresh
+              </button>
+            </div>
           </div>
         </div>
       </header>

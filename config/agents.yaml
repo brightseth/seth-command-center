@@ -1,0 +1,415 @@
+# Seth Intelligence Platform - Agent Registry
+# Version: 1.0.0
+# Last Updated: 2025-10-11
+
+agents:
+  - name: "@seth"
+    emoji: "🧠"
+    role: "Personal Operating System & Ecosystem Coordinator"
+    status: active
+    priority: 1
+    triggers:
+      - "coordinate"
+      - "orchestrate"
+      - "plan project"
+      - "architecture"
+      - "system design"
+      - "ecosystem"
+      - "overview"
+      - "strategy"
+      - "roadmap"
+      - "big picture"
+    capabilities:
+      - "Cross-agent coordination and orchestration"
+      - "Project planning and architecture design"
+      - "Ecosystem-wide decision making"
+      - "Context management across projects"
+      - "Strategic roadmap development"
+      - "Agent delegation and workflow design"
+      - "System health monitoring"
+      - "Priority management across all active projects"
+    tools:
+      - "All tools (meta-agent with full access)"
+      - "Agent delegation system"
+      - "Project context switching"
+      - "Calendar integration"
+      - "Git operations"
+      - "Vercel management"
+    integration:
+      command_center: "Primary coordinator - receives all high-level tasks"
+      handoff_pattern: "Delegates to specialized agents after initial planning"
+      context_awareness: "Maintains global context across all projects and agents"
+    examples:
+      - "Plan the architecture for PARISEYE v2"
+      - "Coordinate deployment of SOLIENNE and vibecodings"
+      - "What's the status of all active projects?"
+      - "Create a roadmap for the next sprint"
+
+  - name: "design-guardian"
+    emoji: "🎨"
+    role: "Unified Design System Enforcer"
+    status: active
+    priority: 2
+    triggers:
+      - "design"
+      - "typography"
+      - "layout"
+      - "spacing"
+      - "colors"
+      - "brand"
+      - "style guide"
+      - "UI review"
+      - "aesthetic"
+      - "visual"
+      - "Swiss design"
+      - "Helvetica"
+      - "grid system"
+    capabilities:
+      - "Enforce Swiss design principles across all projects"
+      - "Typography audits (Helvetica, IBM Plex Mono)"
+      - "Color system management (4-bit palette)"
+      - "Layout and grid system verification"
+      - "Brand consistency enforcement"
+      - "Design system documentation"
+      - "CSS architecture review"
+      - "Responsive design validation"
+    tools:
+      - "Read/Edit CSS files"
+      - "Grep for design violations"
+      - "Browser screenshot analysis"
+      - "Design token validation"
+    integration:
+      command_center: "Called for design reviews and style enforcement"
+      handoff_pattern: "Receives from mobile-first-builder, hands to vercel-deployer"
+      context_awareness: "Maintains global design system state"
+    design_system:
+      typography:
+        primary: "Helvetica Neue, Helvetica, Arial, sans-serif"
+        mono: "IBM Plex Mono, Monaco, Courier New, monospace"
+      colors:
+        background: "#000000"
+        foreground: "#FFFFFF"
+        accent: "#FF6B35"
+        muted: "#666666"
+      spacing: "8px base unit (multiples of 8)"
+      grid: "CSS Grid with auto-fill minmax patterns"
+    examples:
+      - "Review the design of PARISEYE"
+      - "Audit typography across all projects"
+      - "Check if this matches the Swiss design system"
+      - "Update color palette to match 4-bit standard"
+
+  - name: "mobile-first-builder"
+    emoji: "📱"
+    role: "Single-File Progressive Web App Builder"
+    status: active
+    priority: 2
+    triggers:
+      - "mobile"
+      - "responsive"
+      - "single file"
+      - "PWA"
+      - "build app"
+      - "create interface"
+      - "HTML"
+      - "interactive"
+      - "gallery"
+      - "browser"
+      - "UI"
+      - "frontend"
+    capabilities:
+      - "Build complete single-file HTML applications"
+      - "Mobile-first responsive design implementation"
+      - "Progressive Web App features"
+      - "Vanilla JavaScript (no frameworks)"
+      - "Performance optimization"
+      - "Touch-friendly interfaces"
+      - "Offline-first architecture"
+      - "localStorage management"
+    tools:
+      - "Write HTML/CSS/JS files"
+      - "Read existing codebases"
+      - "Browser testing via Bash"
+      - "File structure analysis"
+    integration:
+      command_center: "Receives design specs and data manifests"
+      handoff_pattern: "Gets data from data-curator, reviewed by design-guardian"
+      context_awareness: "Tracks active app builds and feature requirements"
+    patterns:
+      architecture: "Single HTML file with inline CSS/JS"
+      data_loading: "Fetch JSON manifests, progressive rendering"
+      interactivity: "Event delegation, touch events, keyboard nav"
+      performance: "Lazy loading, virtual scrolling, batch rendering"
+    examples:
+      - "Build a mobile gallery for SOLIENNE dataset"
+      - "Create a responsive filter interface"
+      - "Build PARISEYE venue browser"
+      - "Add favorites system with localStorage"
+
+  - name: "vercel-deployer"
+    emoji: "🚀"
+    role: "Deployment & Production Management"
+    status: active
+    priority: 3
+    triggers:
+      - "deploy"
+      - "vercel"
+      - "production"
+      - "publish"
+      - "ship"
+      - "release"
+      - "domain"
+      - "URL"
+      - "preview"
+      - "rollback"
+    capabilities:
+      - "Vercel deployment management"
+      - "Environment variable configuration"
+      - "Domain and DNS management"
+      - "Deployment preview URLs"
+      - "Production rollback handling"
+      - "Build optimization"
+      - "CDN configuration"
+      - "Deployment analytics"
+    tools:
+      - "vercel CLI"
+      - "Git operations"
+      - "Bash commands"
+      - "Environment file management"
+    integration:
+      command_center: "Final step in deployment pipeline"
+      handoff_pattern: "Receives from design-guardian after approval"
+      context_awareness: "Tracks deployment status across all projects"
+    deployment_patterns:
+      static_sites: "vercel --prod for production, vercel for preview"
+      environment_vars: "vercel env add for secrets"
+      custom_domains: "vercel domains add"
+      rollback: "vercel rollback [deployment-url]"
+    examples:
+      - "Deploy PARISEYE to production"
+      - "Create preview deployment for SOLIENNE"
+      - "Add environment variable for API key"
+      - "Roll back to previous deployment"
+
+  - name: "data-curator"
+    emoji: "📊"
+    role: "Large Dataset & Manifest Manager"
+    status: active
+    priority: 2
+    triggers:
+      - "JSON"
+      - "dataset"
+      - "manifest"
+      - "data file"
+      - "gallery"
+      - "metadata"
+      - "normalize"
+      - "clean data"
+      - "CLIP"
+      - "embeddings"
+      - "filter"
+      - "search"
+      - "pagination"
+      - "batch"
+    capabilities:
+      - "Large JSON manifest generation and management"
+      - "Data normalization and cleaning"
+      - "Metadata extraction and enrichment"
+      - "CLIP embedding integration"
+      - "Search and filter system design"
+      - "Progressive loading patterns"
+      - "Data validation and error handling"
+      - "Statistics generation"
+    tools:
+      - "Read/Write large JSON files"
+      - "Python/Node scripts for data processing"
+      - "Grep for data analysis"
+      - "File system scanning"
+    integration:
+      command_center: "Prepares data for mobile-first-builder"
+      handoff_pattern: "Receives raw data, outputs clean manifests"
+      context_awareness: "Tracks dataset versions and statistics"
+    data_patterns:
+      manifest_structure: "version, generated timestamp, total_items, items array"
+      normalization: "Consistent field names, date formats, URL validation"
+      indexing: "Category, tag, and date indices for fast lookups"
+      batching: "200-item default batch size for progressive loading"
+    examples:
+      - "Normalize SOLIENNE dataset to manifest format"
+      - "Extract metadata from 5,000 images"
+      - "Build search index for vibecodings projects"
+      - "Generate statistics for consciousness works"
+
+  - name: "vibecode-archivist"
+    emoji: "🗂️"
+    role: "Portfolio & Project Curator"
+    status: active
+    priority: 3
+    triggers:
+      - "portfolio"
+      - "projects"
+      - "vibecodings"
+      - "inventory"
+      - "SESSION_NOTES"
+      - "catalog"
+      - "archive"
+      - "categorize"
+      - "Eden projects"
+      - "deployment status"
+    capabilities:
+      - "Project inventory management"
+      - "SESSION_NOTES.md parsing"
+      - "Automatic project categorization"
+      - "Deployment status tracking"
+      - "Project metadata extraction"
+      - "Portfolio generation"
+      - "Vercel integration detection"
+      - "Project health monitoring"
+    tools:
+      - "File system scanning"
+      - "Markdown parsing"
+      - "JSON manifest generation"
+      - "Git log analysis"
+    integration:
+      command_center: "Maintains Seth's project inventory"
+      handoff_pattern: "Generates data for data-curator and mobile-first-builder"
+      context_awareness: "Tracks all active and archived projects"
+    categorization_rules:
+      eden: "Eden-related AI art projects"
+      tools: "Developer tools and utilities"
+      featured: "Production-ready portfolio pieces"
+      active: "Modified in last 30 days"
+      deployed: "Has vercel.json or .vercel directory"
+    examples:
+      - "Scan ~/Desktop for all projects"
+      - "Generate vibecodings portfolio manifest"
+      - "Find all Eden-related projects"
+      - "Update project deployment status"
+
+  - name: "doc-organizer"
+    emoji: "📁"
+    role: "File Structure & Documentation Manager"
+    status: active
+    priority: 4
+    triggers:
+      - "organize"
+      - "file structure"
+      - "documentation"
+      - "README"
+      - "folder"
+      - "directory"
+      - "rename"
+      - "move files"
+      - "clean up"
+      - "archive"
+    capabilities:
+      - "Project directory structure design"
+      - "README generation and updates"
+      - "Documentation consistency"
+      - "File organization and cleanup"
+      - "Naming convention enforcement"
+      - "Archive management"
+      - "Git structure optimization"
+      - "Session notes organization"
+    tools:
+      - "File system operations"
+      - "Markdown generation"
+      - "Glob pattern matching"
+      - "Git operations"
+    integration:
+      command_center: "Maintains organized project structures"
+      handoff_pattern: "Works with all agents to keep files organized"
+      context_awareness: "Knows canonical project structures"
+    structure_patterns:
+      webapp: "index.html, assets/, data/, README.md"
+      library: "src/, dist/, tests/, docs/, package.json"
+      documentation: "README.md, CLAUDE.md, SESSION_NOTES.md"
+      data_project: "data/, scripts/, manifests/, browser/"
+    examples:
+      - "Organize PARISEYE project structure"
+      - "Generate README for SOLIENNE"
+      - "Clean up duplicate files in Desktop"
+      - "Archive old session notes"
+
+  - name: "code-reviewer"
+    emoji: "🔍"
+    role: "Code Quality & Best Practices Enforcer"
+    status: active
+    priority: 3
+    triggers:
+      - "review"
+      - "audit"
+      - "code quality"
+      - "best practices"
+      - "refactor"
+      - "optimize"
+      - "performance"
+      - "security"
+      - "clean code"
+      - "technical debt"
+    capabilities:
+      - "Code quality audits"
+      - "Performance optimization"
+      - "Security vulnerability detection"
+      - "Best practices enforcement"
+      - "Refactoring suggestions"
+      - "Technical debt tracking"
+      - "Dependency audits"
+      - "Code pattern analysis"
+    tools:
+      - "Grep for pattern analysis"
+      - "Read code files"
+      - "Git diff analysis"
+      - "Bash for linting tools"
+    integration:
+      command_center: "Called for code reviews before deployment"
+      handoff_pattern: "Reviews work from mobile-first-builder and data-curator"
+      context_awareness: "Tracks code quality metrics across projects"
+    review_focus:
+      performance: "Bundle size, render speed, memory usage"
+      security: "XSS, CSRF, data validation"
+      maintainability: "DRY, SOLID, clear naming"
+      accessibility: "ARIA, keyboard nav, screen readers"
+    examples:
+      - "Review PARISEYE code quality"
+      - "Audit SOLIENNE for performance issues"
+      - "Check security of data handling"
+      - "Suggest refactoring for mobile-first-builder output"
+
+# Agent Coordination Patterns
+coordination_patterns:
+  full_deployment:
+    - "@seth: Plan and coordinate"
+    - "data-curator: Prepare datasets"
+    - "mobile-first-builder: Build interface"
+    - "design-guardian: Review design"
+    - "code-reviewer: Audit code"
+    - "vercel-deployer: Deploy to production"
+
+  portfolio_update:
+    - "vibecode-archivist: Scan projects"
+    - "data-curator: Generate manifest"
+    - "mobile-first-builder: Build portfolio page"
+    - "vercel-deployer: Deploy"
+
+  design_system_update:
+    - "design-guardian: Update design tokens"
+    - "mobile-first-builder: Implement changes"
+    - "code-reviewer: Review implementations"
+    - "@seth: Coordinate rollout across projects"
+
+  data_pipeline:
+    - "data-curator: Clean and normalize"
+    - "mobile-first-builder: Build browser"
+    - "design-guardian: Style verification"
+    - "vercel-deployer: Ship to production"
+
+# Global Settings
+settings:
+  default_handoff_timeout: 300 # seconds
+  context_retention: 7 # days
+  priority_levels:
+    1: "Critical - ecosystem coordination"
+    2: "High - core functionality"
+    3: "Medium - supporting tasks"
+    4: "Low - maintenance and cleanup"
