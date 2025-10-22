@@ -66,32 +66,32 @@ export default function TodosPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white p-8 flex items-center justify-center">
-        <div className="text-xl">Loading...</div>
+      <div className="min-h-screen bg-black text-white flex items-center justify-center font-[family-name:var(--font-geist-mono)]">
+        <div className="text-xl uppercase tracking-wider">Loading...</div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black text-white font-[family-name:var(--font-geist-mono)]">
       <div className="max-w-4xl mx-auto p-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">My TODOs</h1>
-          <p className="text-gray-500">{todos.length} active tasks</p>
+        <div className="mb-8 pb-8 border-b border-white">
+          <h1 className="text-4xl font-bold uppercase tracking-wider mb-2">Active Tasks</h1>
+          <p className="text-sm tracking-wide text-gray-400">{todos.length} TASKS</p>
         </div>
 
         {/* Todo List */}
-        <div className="space-y-2">
+        <div className="space-y-4">
           {todos.length === 0 ? (
-            <div className="text-center py-20 text-gray-400">
-              All caught up! No active TODOs.
+            <div className="text-center py-20 text-gray-400 uppercase tracking-wider">
+              All caught up. No active tasks.
             </div>
           ) : (
             todos.map((todo) => (
               <div
                 key={todo.id}
-                className="border border-gray-200 rounded-lg overflow-hidden hover:border-gray-400 transition-colors"
+                className="border border-white overflow-hidden hover:bg-white hover:text-black transition-colors group"
               >
                 {/* Main Row */}
                 <div className="flex items-start gap-4 p-4">
@@ -104,10 +104,11 @@ export default function TodosPage() {
                         markComplete(todo.id)
                       }
                     }}
-                    className="flex-shrink-0 w-6 h-6 border-2 border-gray-400 rounded flex items-center justify-center hover:border-black transition-colors mt-0.5"
+                    className="flex-shrink-0 w-11 h-11 border-2 border-white flex items-center justify-center hover:bg-black hover:text-white group-hover:border-black transition-colors"
+                    aria-label={todo.status === 'done' ? 'Mark incomplete' : 'Mark complete'}
                   >
                     {todo.status === 'done' && (
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                         <path
                           fillRule="evenodd"
                           d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -121,24 +122,24 @@ export default function TodosPage() {
                   <div className="flex-1 min-w-0">
                     <button
                       onClick={() => setExpandedId(expandedId === todo.id ? null : todo.id)}
-                      className="w-full text-left"
+                      className="w-full text-left min-h-[44px] flex flex-col justify-center"
                     >
-                      <div className="flex items-center gap-3 mb-1">
+                      <div className="flex items-center gap-3 mb-2">
                         <div
-                          className="w-2 h-2 rounded-full flex-shrink-0"
+                          className="w-3 h-3 flex-shrink-0"
                           style={{ backgroundColor: todo.project.color }}
                         />
                         <h3
-                          className={`text-lg font-medium ${
-                            todo.status === 'done' ? 'line-through text-gray-400' : 'text-black'
+                          className={`text-lg font-bold uppercase tracking-wide ${
+                            todo.status === 'done' ? 'line-through opacity-50' : ''
                           }`}
                         >
                           {todo.title}
                         </h3>
                       </div>
-                      <div className="flex items-center gap-3 text-sm text-gray-500">
+                      <div className="flex items-center gap-4 text-xs uppercase tracking-wider opacity-70">
                         <span>{todo.project.name}</span>
-                        {todo.priority === 1 && <span className="text-red-500">● High Priority</span>}
+                        {todo.priority === 1 && <span>High Priority</span>}
                         {todo.due && (
                           <span>
                             Due: {new Date(todo.due).toLocaleDateString()}
@@ -149,27 +150,27 @@ export default function TodosPage() {
 
                     {/* Expanded Details */}
                     {expandedId === todo.id && (
-                      <div className="mt-4 pt-4 border-t border-gray-200">
+                      <div className="mt-4 pt-4 border-t border-current">
                         {todo.notes && (
-                          <div className="mb-3">
-                            <div className="text-xs font-semibold text-gray-500 uppercase mb-1">
+                          <div className="mb-4">
+                            <div className="text-xs font-bold uppercase tracking-wider mb-2 opacity-70">
                               Notes
                             </div>
-                            <div className="text-sm text-gray-700 whitespace-pre-wrap">
+                            <div className="text-sm leading-relaxed whitespace-pre-wrap">
                               {todo.notes}
                             </div>
                           </div>
                         )}
                         {todo.tags && (
-                          <div className="mb-3">
-                            <div className="text-xs font-semibold text-gray-500 uppercase mb-1">
+                          <div className="mb-4">
+                            <div className="text-xs font-bold uppercase tracking-wider mb-2 opacity-70">
                               Tags
                             </div>
                             <div className="flex gap-2 flex-wrap">
                               {todo.tags.split(',').map((tag) => (
                                 <span
                                   key={tag}
-                                  className="text-xs px-2 py-1 bg-gray-100 rounded"
+                                  className="text-xs px-3 py-1 border border-current uppercase tracking-wider"
                                 >
                                   {tag.trim()}
                                 </span>
@@ -177,7 +178,7 @@ export default function TodosPage() {
                             </div>
                           </div>
                         )}
-                        <div className="text-xs text-gray-400">
+                        <div className="text-xs uppercase tracking-wider opacity-50">
                           Created: {new Date(todo.createdAt).toLocaleDateString()}
                         </div>
                       </div>
@@ -187,20 +188,21 @@ export default function TodosPage() {
                   {/* Expand Icon */}
                   <button
                     onClick={() => setExpandedId(expandedId === todo.id ? null : todo.id)}
-                    className="flex-shrink-0 text-gray-400 hover:text-black transition-colors"
+                    className="flex-shrink-0 w-11 h-11 flex items-center justify-center transition-transform"
+                    aria-label={expandedId === todo.id ? 'Collapse' : 'Expand'}
                   >
                     <svg
-                      className={`w-5 h-5 transition-transform ${
+                      className={`w-6 h-6 transition-transform ${
                         expandedId === todo.id ? 'rotate-180' : ''
                       }`}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
+                      strokeWidth={2}
                     >
                       <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
+                        strokeLinecap="square"
+                        strokeLinejoin="miter"
                         d="M19 9l-7 7-7-7"
                       />
                     </svg>
