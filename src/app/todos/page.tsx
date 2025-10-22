@@ -17,10 +17,15 @@ interface Todo {
   createdAt: string
 }
 
+type SortOption = 'priority' | 'project' | 'due' | 'created'
+type StatusFilter = 'all' | 'open' | 'doing' | 'blocked' | 'snoozed'
+
 export default function TodosPage() {
   const [todos, setTodos] = useState<Todo[]>([])
   const [loading, setLoading] = useState(true)
   const [expandedId, setExpandedId] = useState<string | null>(null)
+  const [sortBy, setSortBy] = useState<SortOption>('priority')
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
 
   const loadTodos = async () => {
     try {
@@ -64,6 +69,43 @@ export default function TodosPage() {
     loadTodos()
   }, [])
 
+  // Filter and sort todos
+  const filteredAndSortedTodos = todos
+    .filter(todo => {
+      if (statusFilter === 'all') return true
+      return todo.status === statusFilter
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case 'priority':
+          // High priority (1) first, then normal (0)
+          if (a.priority !== b.priority) return b.priority - a.priority
+          // Secondary sort by created date (newest first)
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+
+        case 'project':
+          // Alphabetical by project name
+          const projectCompare = a.project.name.localeCompare(b.project.name)
+          if (projectCompare !== 0) return projectCompare
+          // Secondary sort by priority
+          return b.priority - a.priority
+
+        case 'due':
+          // Tasks with due dates first, then by due date (soonest first)
+          if (!a.due && !b.due) return 0
+          if (!a.due) return 1
+          if (!b.due) return -1
+          return new Date(a.due).getTime() - new Date(b.due).getTime()
+
+        case 'created':
+          // Newest first
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+
+        default:
+          return 0
+      }
+    })
+
   if (loading) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center font-[family-name:var(--font-geist-mono)]">
@@ -78,17 +120,77 @@ export default function TodosPage() {
         {/* Header */}
         <div className="mb-8 pb-8 border-b border-white">
           <h1 className="text-4xl font-bold uppercase tracking-wider mb-2">Active Tasks</h1>
-          <p className="text-sm tracking-wide text-gray-400">{todos.length} TASKS</p>
+          <p className="text-sm tracking-wide text-gray-400">
+            {filteredAndSortedTodos.length} {statusFilter === 'all' ? 'TASKS' : statusFilter.toUpperCase()}
+          </p>
+        </div>
+
+        {/* Toolbar */}
+        <div className="mb-8 pb-6 border-b border-white">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
+            {/* Sort By */}
+            <div className="flex-1">
+              <div className="text-xs font-bold uppercase tracking-wider mb-3 opacity-70">Sort By</div>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { value: 'priority' as SortOption, label: 'Priority' },
+                  { value: 'project' as SortOption, label: 'Project' },
+                  { value: 'due' as SortOption, label: 'Due Date' },
+                  { value: 'created' as SortOption, label: 'Created' }
+                ].map(option => (
+                  <button
+                    key={option.value}
+                    onClick={() => setSortBy(option.value)}
+                    className={`px-4 py-2 border border-white uppercase text-xs tracking-wider transition-colors ${
+                      sortBy === option.value
+                        ? 'bg-white text-black'
+                        : 'hover:bg-white hover:text-black'
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Filter By Status */}
+            <div className="flex-1">
+              <div className="text-xs font-bold uppercase tracking-wider mb-3 opacity-70">Filter By Status</div>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { value: 'all' as StatusFilter, label: 'All' },
+                  { value: 'open' as StatusFilter, label: 'Open' },
+                  { value: 'doing' as StatusFilter, label: 'Doing' },
+                  { value: 'blocked' as StatusFilter, label: 'Blocked' },
+                  { value: 'snoozed' as StatusFilter, label: 'Snoozed' }
+                ].map(option => (
+                  <button
+                    key={option.value}
+                    onClick={() => setStatusFilter(option.value)}
+                    className={`px-4 py-2 border border-white uppercase text-xs tracking-wider transition-colors ${
+                      statusFilter === option.value
+                        ? 'bg-white text-black'
+                        : 'hover:bg-white hover:text-black'
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Todo List */}
         <div className="space-y-4">
-          {todos.length === 0 ? (
+          {filteredAndSortedTodos.length === 0 ? (
             <div className="text-center py-20 text-gray-400 uppercase tracking-wider">
-              All caught up. No active tasks.
+              {statusFilter === 'all'
+                ? 'All caught up. No active tasks.'
+                : `No tasks with status: ${statusFilter}`}
             </div>
           ) : (
-            todos.map((todo) => (
+            filteredAndSortedTodos.map((todo) => (
               <div
                 key={todo.id}
                 className="border border-white overflow-hidden hover:bg-white hover:text-black transition-colors group"
