@@ -51,7 +51,7 @@ interface MonitorData {
       percentage: number
     }
     recentScans: Array<{
-      timestamp: string
+      createdAt: string
       status: string
       payload: string
     }>
@@ -59,7 +59,7 @@ interface MonitorData {
   auditLog: {
     logs: Array<{
       id: string
-      timestamp: string
+      createdAt: string
       actor: string
       action: string
       status: string
@@ -299,7 +299,7 @@ export default function MonitorPage() {
                   </div>
                   <div className="text-gray-500 space-y-1">
                     <div>Actor: {log.actor}</div>
-                    <div>Time: {formatRelativeTime(log.timestamp)}</div>
+                    <div>Time: {formatRelativeTime(log.createdAt)}</div>
                   </div>
                   {log.error && (
                     <div className="text-red-400 mt-1 truncate">Error: {log.error}</div>

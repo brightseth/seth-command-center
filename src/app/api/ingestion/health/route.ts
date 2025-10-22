@@ -21,9 +21,9 @@ export async function GET() {
         payload: { contains: 'scan-todos' }
       },
       take: 10,
-      orderBy: { timestamp: 'desc' },
+      orderBy: { createdAt: 'desc' },
       select: {
-        timestamp: true,
+        createdAt: true,
         status: true,
         payload: true
       }

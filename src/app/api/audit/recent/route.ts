@@ -6,10 +6,10 @@ export async function GET() {
   try {
     const recentLogs = await prisma.auditLog.findMany({
       take: 50,
-      orderBy: { timestamp: 'desc' },
+      orderBy: { createdAt: 'desc' },
       select: {
         id: true,
-        timestamp: true,
+        createdAt: true,
         actor: true,
         action: true,
         status: true,
